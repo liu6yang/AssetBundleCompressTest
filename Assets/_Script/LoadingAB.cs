@@ -77,14 +77,37 @@ public class LoadingAB : MonoBehaviour {
             tips = "";
             Debug.Log("Loading LZMA AB With LoadFromFile :" + time);
         }
-        else if (GUI.Button(new Rect(300, 50, 200, 45), "LZMA  WWW"))
+        else if (GUI.Button(new Rect(300, 50, 200, 45), "LZMA  WWW.CacheOrDownload"))
         {
-
+            UnLoaAllBundles();
+            StartCoroutine(StartWWWLoadFromCacheOrDownload());
         }
 
         //instanite ??
         
         GUI.Label(new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 400, 300), tips);
+    }
+
+    IEnumerator StartWWWLoadFromCacheOrDownload()
+    {
+        float time = Time.realtimeSinceStartup;
+        foreach (var it in bundleName)
+        {
+            string tempPath = string.Format("file://{0}/{1}/{2}", Application.streamingAssetsPath, "AssetBundles_LZMA", it);
+            Debug.Log(tempPath);
+            var www = WWW.LoadFromCacheOrDownload(tempPath,  2);
+            yield return www;
+            if(!string.IsNullOrEmpty(www.error))
+            {
+                Debug.Log(www.error);
+                yield return null;
+            }
+            LoadedBundles.Add(www.assetBundle);
+        }
+
+        time = Time.realtimeSinceStartup - time;
+        tips = "";
+        Debug.Log("Loading LZMA AB With WWWLoadFromCacheOrDownload :" + time);
     }
 
     void UnLoaAllBundles()

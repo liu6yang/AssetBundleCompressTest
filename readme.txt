@@ -19,7 +19,7 @@ loading：
 PC：
 		LoadFromFile	WWW
 LZMA : 		0.406
-LZ4			0.006
+LZ4			0.015
 UC..		0.004
 
 Android：HM2A
@@ -28,5 +28,7 @@ LZMA :
 LZ4			
 UC..		
 
+
+cache?
 
 分析：
