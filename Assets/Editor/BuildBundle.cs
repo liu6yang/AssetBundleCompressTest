@@ -36,4 +36,29 @@ public class BuildBundle {
         }
         BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.Android);
     }
+
+    [MenuItem("LiuYangTest/AB LZ4 custom to LZMA")]
+    static void CustomCompressLZMA2LZ4()
+    {
+        string lz4Path = Application.streamingAssetsPath + "/AssetBundles_LZ4";
+        if (!Directory.Exists(lz4Path))
+        {
+            Debug.LogError("not exits AssetBundles_LZ4");
+            return;
+        }
+        string targetPath = Application.streamingAssetsPath + "/AssetBundles_CustomLZ42LZMA";
+        if (!Directory.Exists(targetPath))
+        {
+            Directory.CreateDirectory(targetPath);
+        }
+        var files = Directory.GetFiles(lz4Path);
+        foreach(var item in files)
+        {
+            var Lastindex = item.LastIndexOf("\\");
+            var name = item.Substring(Lastindex);
+            var dst = targetPath + name;
+            Debug.LogWarning("src :" + item + " dst:" + dst);
+            common.LZMA.Compress(item , dst);
+        }
+    }
 }
